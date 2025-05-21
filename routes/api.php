@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [
     'uses' => function () {
         return response()->json([
-            'message' => 'Welcome to the media API',
+            'message' => 'Welcome to the core API',
             'status' => 200,
             'url' => request()->url(),
             'path' => request()->path(),
