@@ -45,6 +45,16 @@ class CourseController extends ApiController
         ]);
     }
 
+    public function getLatestCourses(Request $request)
+    {
+        $courses = Course::where('published', true)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        return $this->success($courses);
+    }
+
 
 
     public function store(Request $request)

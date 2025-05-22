@@ -33,10 +33,13 @@ Route::middleware('auth.remote')->group(function () {
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
 
     Route::apiResource('courses', CourseController::class);
+
     Route::apiResource('classes', ClassModelController::class);
     Route::apiResource('packs', PackController::class);
+
 });
 
+Route::get('/courses/latest', [CourseController::class, 'getLatestCourses']);
 
 
 

@@ -6,8 +6,8 @@ require 'recipe/laravel.php';
 
 // Config
 set('keep_releases', 3);
-set('application', 'media-service');
-set('repository', 'git@github.com:proyecto-academia/media-service.git');
+set('application', 'core-service');
+set('repository', 'git@github.com:proyecto-academia/core-service.git');
 
 
 set('branch', 'main');
@@ -19,7 +19,7 @@ add('writable_dirs', ['storage', 'bootstrap/cache']);
 
 
 
-host('16.16.32.20')
+host('56.228.50.178')
     ->set('remote_user', 'deployer')
     ->set('identity_file', '/home/mark/.ssh/id_rsa')
     ->set('deploy_path', '/var/www/laravel');
