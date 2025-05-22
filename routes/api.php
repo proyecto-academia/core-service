@@ -21,6 +21,7 @@ Route::get('/', [
     },
 ]);
 
+Route::get('/courses/latest', [CourseController::class, 'getLatestCourses']);
 
 
 Route::middleware('auth.remote')->group(function () {
@@ -39,7 +40,6 @@ Route::middleware('auth.remote')->group(function () {
 
 });
 
-Route::get('/courses/latest', [CourseController::class, 'getLatestCourses']);
 
 
 
