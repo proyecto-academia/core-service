@@ -18,8 +18,22 @@ class CourseController extends ApiController
         // Filtrado dinámico solo si el campo es válido
         foreach ($filterable as $field) {
             if ($request->filled($field)) {
-                $query->where($field, $request->input($field));
+                if ($field === 'name') {
+                    // Usar LIKE para el campo 'name'
+                    $query->where($field, 'LIKE', '%' . $request->input($field) . '%');
+                } else {
+                    $query->where($field, $request->input($field));
+                }
             }
+        }
+
+        // Filtrar por rango de precios
+        if ($request->filled('minPrice')) {
+            $query->where('price', '>=', $request->input('minPrice'));
+        }
+
+        if ($request->filled('maxPrice')) {
+            $query->where('price', '<=', $request->input('maxPrice'));
         }
 
         // Orden dinámico solo si el campo es válido
@@ -54,8 +68,6 @@ class CourseController extends ApiController
 
         return $this->success($courses);
     }
-
-
 
     public function store(Request $request)
     {
