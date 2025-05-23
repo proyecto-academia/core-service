@@ -22,6 +22,11 @@ Route::get('/', [
 ]);
 
 Route::get('/courses/latest', [CourseController::class, 'getLatestCourses']);
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{id}', [CourseController::class, 'show']);
+
+Route::get('/packs', [PackController::class, 'index']);
+Route::get('/packs/{id}', [PackController::class, 'show']);
 
 
 Route::middleware('auth.remote')->group(function () {
@@ -33,10 +38,10 @@ Route::middleware('auth.remote')->group(function () {
     Route::post('/purchases', [PurchaseController::class, 'store']);
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
 
-    Route::apiResource('courses', CourseController::class);
+    Route::apiResource('courses', CourseController::class)->except(['index', 'show']);
 
     Route::apiResource('classes', ClassModelController::class);
-    Route::apiResource('packs', PackController::class);
+    Route::apiResource('packs', PackController::class)->except(['index', 'show']);
 
 });
 
