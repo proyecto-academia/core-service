@@ -45,12 +45,15 @@ class CourseSeeder extends Seeder
 
         // 3. Crear 51 cursos
         for ($i = 1; $i <= 51; $i++) {
+
+            $is_free = $faker->boolean(30);
+            $price = $is_free ? 0.00 : $faker->randomFloat(2, 9.99, 199.99);
             $course = Course::create([
                 'name' => $faker->catchPhrase,
                 'description' => $faker->paragraph(3),
                 'estimated_hours' => $faker->numberBetween(5, 40),
-                'is_free' => $faker->boolean(30),
-                'price' => $faker->randomFloat(2, 9.99, 199.99),
+                'is_free' => $is_free,
+                'price' => $price,
                 'published' => $faker->boolean(70),
             ]);
 

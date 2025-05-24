@@ -41,11 +41,16 @@ class CourseController extends ApiController
         $order = strtolower($request->input('order', 'asc')) === 'desc' ? 'desc' : 'asc';
 
         if (in_array($orderBy, $orderable)) {
-            $query->orderBy($orderBy, $order);
+            if ($orderBy === 'price') {
+                // Ordenar por precio, tratando is_free como si el precio fuera 0
+                $query->orderByRaw('CASE WHEN is_free = 1 THEN 0 ELSE price END ' . $order);
+            } else {
+                $query->orderBy($orderBy, $order);
+            }
         }
 
         // Paginación
-        $perPage = 25;
+        $perPage = 24;
         $courses = $query->paginate($perPage);
 
         return $this->success([

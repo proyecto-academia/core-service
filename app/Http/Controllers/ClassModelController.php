@@ -30,7 +30,7 @@ class ClassModelController extends ApiController
             $query->orderBy($orderBy, $order);
         }
 
-        $perPage = 25;
+        $perPage = 24;
         $classes = $query->paginate($perPage);
 
         return $this->success([
