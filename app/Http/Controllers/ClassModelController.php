@@ -13,7 +13,7 @@ class ClassModelController extends ApiController
 
         // Lista blanca de filtros y ordenables
         $filterable = ['course_id', 'title'];
-        $orderable = ['id', 'title', 'order', 'course_id'];
+        $orderable = ['id', 'title', 'position', 'course_id'];
 
         // Filtros dinámicos
         foreach ($filterable as $field) {
@@ -23,7 +23,7 @@ class ClassModelController extends ApiController
         }
 
         // Orden dinámico
-        $orderBy = $request->input('orderBy', 'order');
+        $orderBy = $request->input('orderBy', 'position');
         $order = strtolower($request->input('order', 'asc')) === 'desc' ? 'desc' : 'asc';
 
         if (in_array($orderBy, $orderable)) {
