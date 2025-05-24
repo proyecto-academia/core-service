@@ -25,7 +25,8 @@ class ValidateTokenWithAuthService
 
             if ($response->status() !== 200) {
                 if( $response->status() === 401 && $response->json('message') === 'token expired' ) {
-
+                   
+                    //DEVUELVO ESTO CON UN TOKEN VALIDO
                     return response()->json([
                         'error' => 'token expired',
                         'message' => 'token expired',
