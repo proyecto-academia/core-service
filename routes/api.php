@@ -39,6 +39,8 @@ Route::middleware('auth.remote')->group(function () {
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
 
     Route::apiResource('courses', CourseController::class)->except(['index', 'show']);
+    Route::get('/courses/prices/min', [CourseController::class, 'getCoursesMinPrice']);
+    Route::get('/courses/prices/max', [CourseController::class, 'getCoursesMaxPrice']);
 
     Route::apiResource('classes', ClassModelController::class);
     Route::apiResource('packs', PackController::class)->except(['index', 'show']);

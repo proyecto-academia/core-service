@@ -63,10 +63,29 @@ class CourseController extends ApiController
     {
         $courses = Course::where('published', true)
             ->orderBy('created_at', 'desc')
-            ->take(10)
+            ->take(5)
             ->get();
 
         return $this->success($courses);
+    }
+
+
+    public function getCoursesMinPrice()
+    {
+        $minPrice = Course::where('published', true)
+            ->whereNotNull('price')
+            ->min('price');
+
+        return $this->success(['minPrice' => $minPrice]);
+    }
+
+    public function getCoursesMaxPrice()
+    {
+        $maxPrice = Course::where('published', true)
+            ->whereNotNull('price')
+            ->max('price');
+
+        return $this->success(['maxPrice' => $maxPrice]);
     }
 
     public function store(Request $request)
