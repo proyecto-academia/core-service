@@ -40,6 +40,9 @@ class ClassModelSeeder extends Seeder
         $imageDir = storage_path('app/test-assets/classes/photos');
         $imageFiles = File::files($imageDir);
 
+        $videoDir = storage_path('app/test-assets/classes/videos');
+        $videoFiles = File::files($videoDir);
+
         if (empty($imageFiles)) {
             echo "⚠️  No se encontraron imágenes en {$imageDir}\n";
             return;
@@ -69,6 +72,19 @@ class ClassModelSeeder extends Seeder
                     echo "✅ Clase '{$class->title}' creada con imagen en curso {$course->id}\n";
                 } else {
                     echo "❌ Falló subida para clase {$class->id}: {$response->status()} - {$response->body()}\n";
+                }
+
+                $selectedVideo = $videoFiles[array_rand($videoFiles)];
+                $uploadVideoUrl = rtrim(env('MEDIA_URL', 'https://mardev.es/api/media'), '/') . "/classes/{$class->id}/video";
+                $videoResponse = Http::withToken($token)->attach(
+                    'file',
+                    fopen($selectedVideo->getRealPath(), 'r'),
+                    $selectedVideo->getFilename()
+                )->post($uploadVideoUrl);
+                if ($videoResponse->successful()) {
+                    echo "✅ Video para clase '{$class->title}' subido correctamente.\n";
+                } else {
+                    echo "❌ Falló subida de video para clase {$class->id}: {$videoResponse->status()} - {$videoResponse->body()}\n";
                 }
             }
         }
