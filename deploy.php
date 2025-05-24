@@ -60,8 +60,19 @@ task('php-fpm:restart', function () {
 // });
 
 
+task('upload:test-assets', function () {
+    // Carpeta local con imágenes
+    $localPath = 'storage/app/test-assets';
 
+    // Carpeta remota shared donde se deben subir
+    $remotePath = '{{deploy_path}}/shared/storage/app';
+
+    upload($localPath, $remotePath);
+})->desc('Subir imágenes de prueba a storage/app');
+
+// Integrar la tarea en el flujo de despliegue
 after('deploy:shared', 'upload:env');
+after('deploy:shared', 'upload:test-assets');
 
 
 
