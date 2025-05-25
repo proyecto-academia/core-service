@@ -32,7 +32,11 @@ Route::get('/packs/{id}', [PackController::class, 'show']);
 Route::middleware('auth.remote')->group(function () {
     // Inscripciones
     Route::post('/enrollments', [EnrollmentController::class, 'store']);
+    Route::get('/enrollments/courses', [EnrollmentController::class, 'getUserCourses']);
+
     Route::get('/enrollments/{id}', [EnrollmentController::class, 'show']);
+
+
 
     // Compras
     Route::post('/purchases', [PurchaseController::class, 'store']);

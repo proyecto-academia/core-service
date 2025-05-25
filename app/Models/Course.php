@@ -33,7 +33,8 @@ class Course extends Model
     // Relación: muchos usuarios pueden estar inscritos en un curso
     public function enrollments()
     {
-        return $this->morphMany(Enrollment::class, 'enrollable');
+        return $this->hasMany(Enrollment::class, 'enrollable_id')
+            ->where('enrollable_type', Course::class);
     }
 
 
