@@ -57,6 +57,8 @@ class EnrollmentController extends ApiController
      */
     public function show($id)
     {
+
+        dd(Enrollment::all()->toArray());
         $userId = request()->get('auth_user')['data']['id'] ?? null;
         if (!$userId) {
             return $this->error('Unauthorized', 401);
