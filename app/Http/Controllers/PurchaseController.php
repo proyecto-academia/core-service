@@ -15,7 +15,7 @@ class PurchaseController extends ApiController
      */
     public function store(Request $request)
     {
-        $userId = $request->get('auth_user')['id'] ?? null;
+        $userId = $request->get('auth_user')['data']['id'] ?? null;
         if (!$userId) {
             return $this->error('Unauthorized', 401);
         }
@@ -69,7 +69,7 @@ class PurchaseController extends ApiController
      */
     public function show($id)
     {
-        $userId = request()->get('auth_user')['id'] ?? null;
+        $userId = request()->get('auth_user')['data']['id'] ?? null;
         if (!$userId) {
             return $this->error('Unauthorized', 401);
         }
