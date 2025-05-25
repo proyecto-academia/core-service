@@ -31,6 +31,8 @@ class ClassModelController extends ApiController
         $availableCourses = $this->getAvailableCourses($request);
         if (!empty($availableCourses)) {
             $query->whereIn('course_id', $availableCourses);
+        }else{
+            return $this->error('You don\'t have access to  any class.', 401);
         }
 
         // Orden dinámico
