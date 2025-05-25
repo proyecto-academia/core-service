@@ -81,6 +81,18 @@ class PaymentController extends ApiController
             $enrollableType = $intent->metadata->enrollable_type;
             $userId = $intent->metadata->user_id;
 
+            $alreadyEnrolled = Enrollment::where([
+                'user_id' => $userId,
+                'enrollable_type' => $enrollableType === 'course' ? Course::class : Pack::class,
+                'enrollable_id' => $enrollableId,
+            ])->exists();
+            
+            if ($alreadyEnrolled) {
+                return response()->json([
+                    'error' => 'Ya estás inscrito en este curso.',
+                ], 400);
+            }
+
             // Create the enrollment after successful payment
             $enrollment = Enrollment::firstOrCreate([
                 'user_id' => $userId,
