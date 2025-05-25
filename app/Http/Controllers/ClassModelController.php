@@ -45,6 +45,7 @@ class ClassModelController extends ApiController
         $classes = $query->paginate($perPage);
 
         return $this->success([
+            'available_courses' => $availableCourses,
             'classes' => $classes->items(),
             'pagination' => [
                 'current_page' => $classes->currentPage(),
