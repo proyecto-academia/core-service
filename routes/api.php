@@ -2,13 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ClassModelController;
 use App\Http\Controllers\PackController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', [
     'uses' => function () {
@@ -42,6 +42,9 @@ Route::middleware('auth.remote')->group(function () {
     Route::post('/purchases', [PurchaseController::class, 'store']);
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
 
+    Route::post('/create-payment-intent', [PaymentController::class, 'create']);
+    Route::post('/confirm-purchase', [PaymentController::class, 'confirm']);
+
     Route::apiResource('courses', CourseController::class)->except(['index', 'show']);
     Route::get('/courses/prices/min', [CourseController::class, 'getCoursesMinPrice']);
     Route::get('/courses/prices/max', [CourseController::class, 'getCoursesMaxPrice']);
@@ -51,7 +54,7 @@ Route::middleware('auth.remote')->group(function () {
 });
 
 Route::middleware(['auth.remote', 'check.enrolled'])->group(function () {
-    Route::apiResource('classes', ClassModelController::class)->except([  'store', 'update', 'destroy']);
+    Route::apiResource('classes', ClassModelController::class)->except(['store', 'update', 'destroy']);
 });
 
 Route::middleware(['auth.remote', 'auth.role:admin,teacher'])->group(function () {
