@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.remote' => \App\Http\Middleware\ValidateTokenWithAuthService::class,
             'auth.role' => \App\Http\Middleware\CheckUserRole::class,
+            'check.enrolled' => \App\Http\Middleware\CheckValidEnrollmentsForClassModel::class,
         ]);
         $middleware->append([
             // Force JSON response

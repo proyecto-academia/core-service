@@ -46,11 +46,17 @@ Route::middleware('auth.remote')->group(function () {
     Route::get('/courses/prices/min', [CourseController::class, 'getCoursesMinPrice']);
     Route::get('/courses/prices/max', [CourseController::class, 'getCoursesMaxPrice']);
 
-    Route::apiResource('classes', ClassModelController::class);
     Route::apiResource('packs', PackController::class)->except(['index', 'show']);
 
 });
 
+Route::middleware(['auth.remote', 'check.enrolled'])->group(function () {
+    Route::apiResource('classes', ClassModelController::class)->except([  'store', 'update', 'destroy']);
+});
+
+Route::middleware(['auth.remote', 'auth.role:admin,teacher'])->group(function () {
+    Route::apiResource('classes', ClassModelController::class)->except(['index', 'show']);
+});
 
 
 

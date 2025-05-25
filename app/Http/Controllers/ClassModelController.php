@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class ClassModelController extends ApiController
 {
+    private function getAvailableCourses(Request $request)
+    {
+        return $request->get('available_courses', []);
+    }
+
     public function index(Request $request)
     {
         $query = ClassModel::query();
@@ -20,6 +25,12 @@ class ClassModelController extends ApiController
             if ($request->filled($field)) {
                 $query->where($field, $request->input($field));
             }
+        }
+
+        // Filtrar por cursos disponibles
+        $availableCourses = $this->getAvailableCourses($request);
+        if (!empty($availableCourses)) {
+            $query->whereIn('course_id', $availableCourses);
         }
 
         // Orden dinámico
@@ -60,7 +71,11 @@ class ClassModelController extends ApiController
 
     public function show($id)
     {
+        $availableCourses = $this->getAvailableCourses(request());
         $class = ClassModel::find($id);
+        if ($class && !in_array($class->course_id, $availableCourses)) {
+            return $this->error('You don\'t have access to this class.', 401);
+        }
 
         if (!$class) {
             return $this->error('Class not found', 404);
