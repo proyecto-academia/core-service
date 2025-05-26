@@ -31,6 +31,14 @@ class EnrollmentController extends ApiController
             return $this->error(ucfirst($data['type']) . ' not found', 404);
         }
 
+        if ($item::class === Course::class && ($item->price != 0 || $item->is_free == false)) {
+            return $this->error('This course is not free, you have to pay before enrolling.', 400);
+        }
+
+        if ($item::class === Pack::class && ($item->price != 0 || $item->is_free == false)) {
+            return $this->error('This pack is not free, you have to pay before enrolling.', 400);
+        }
+
         // Verificar si ya existe inscripción
         $existing = Enrollment::where('user_id', $userId)
             ->where('enrollable_type', $modelClass)
@@ -66,7 +74,31 @@ class EnrollmentController extends ApiController
             ->where('user_id', $userId)
             ->findOrFail($id);
 
+        if (!$enrollment) {
+            return $this->error('Enrollment not found', 404);
+        }
+
         return $this->success(['enrollment' => $enrollment]);
+    }
+
+    public function getUserEnrollments(Request $request)
+    {
+        $userId = $request->get('auth_user')['data']['id'] ?? null;
+        if (!$userId) {
+            return $this->error('Unauthorized', 401);
+        }
+
+        $enrollments = Enrollment::with(['enrollable'])
+            ->where('user_id', $userId)
+            ->get();
+
+        if ($enrollments->isEmpty()) {
+            return $this->error('No enrollments found for this user', 404);
+        }
+        return $this->success([
+            'success' => true,
+            'enrollments' => $enrollments,
+        ]);
     }
 
     public function getUserCourses(Request $request)
@@ -85,7 +117,7 @@ class EnrollmentController extends ApiController
         })->get();
         $packCourses = $userPacks->flatMap(function ($pack) {
             return $pack->courses;
-        })->unique('id'); 
+        })->unique('id');
 
         $allCourses = $individualCourses->merge($packCourses)->unique('id');
 
