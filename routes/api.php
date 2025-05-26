@@ -41,6 +41,7 @@ Route::middleware('auth.remote')->group(function () {
 
     // Compras
     Route::post('/purchases', [PurchaseController::class, 'store']);
+    Route::get('/purchases/user', [PurchaseController::class, 'getUserPurchases']);
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
 
     Route::post('/create-payment-intent', [PaymentController::class, 'create']);

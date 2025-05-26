@@ -80,4 +80,22 @@ class PurchaseController extends ApiController
 
         return $this->success(['purchase' => $purchase]);
     }
+
+    public function getUserPurchases()
+    {
+        $userId = request()->get('auth_user')['data']['id'] ?? null;
+        if (!$userId) {
+            return $this->error('Unauthorized', 401);
+        }
+
+        $purchases = Purchase::with('enrollment.enrollable')
+            ->where('user_id', $userId)
+            ->get();
+        
+        if ($purchases->isEmpty()) {
+            return $this->error('No purchases found', 404);
+        }
+
+        return $this->success(['purchases' => $purchases]);
+    }
 }
