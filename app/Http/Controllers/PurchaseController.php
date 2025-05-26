@@ -78,6 +78,10 @@ class PurchaseController extends ApiController
             ->where('user_id', $userId)
             ->findOrFail($id);
 
+        if (!$purchase) {
+            return $this->error('Purchase not found', 404);
+        }
+
         return $this->success(['purchase' => $purchase]);
     }
 
