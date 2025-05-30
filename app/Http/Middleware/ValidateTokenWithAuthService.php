@@ -23,7 +23,6 @@ class ValidateTokenWithAuthService
 
         // Buscar en Redis
         if ($cached = Redis::connection('shared')->get($cacheKey)) {
-            dd('Auth user data from cache', json_decode($cached, true));
             $request->merge(['auth_user' => json_decode($cached, true)]);
             return $next($request);
         }
