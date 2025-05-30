@@ -46,10 +46,9 @@ class ValidateTokenWithAuthService
             }
 
             // Token válido
-            $response_json = $response->json();
-            $data = $response_json['data'] ?? null;
+            $data = $response->json();
 
-            if (!$data || !isset($data['expires_at'])) {
+            if (!$data || !isset($data['data']['expires_at'])) {
                 return response()->json(['error' => 'Invalid auth response (no expires_at)'], 500);
             }
 
