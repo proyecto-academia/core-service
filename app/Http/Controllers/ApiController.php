@@ -8,11 +8,21 @@ class ApiController extends Controller
 
     public function success($data = null, $message = 'success', $statusCode = 200): JsonResponse
     {
+        $request = request();
+        if($request->get('auth_user')) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'data' => $data,
+                'user' => $request->get('auth_user')['data'],
+                'url' => $request->url(),
+            ], $statusCode);
+        }
         return response()->json([
             'success' => true,
             'message' => $message,
             'data' => $data,
-            'url' => request()->url(),
+            'url' => $request->url(),
         ], $statusCode);
     }
 
