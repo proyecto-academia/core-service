@@ -103,4 +103,17 @@ class PackController extends ApiController
 
         return $this->success(null, 'Pack deleted', 204);
     }
+    
+    public function getPackCourses($packId)
+    {
+        $pack = Pack::find($packId);
+
+        if (!$pack) {
+            return $this->error('Pack not found', 404);
+        }
+
+        $courses = $pack->courses; // Assuming Pack model has a 'courses' relationship
+
+        return $this->success($courses, 'Courses retrieved successfully');
+    }
 }

@@ -52,6 +52,7 @@ Route::middleware('auth.remote')->group(function () {
     Route::get('/courses/prices/max', [CourseController::class, 'getCoursesMaxPrice']);
 
     Route::apiResource('packs', PackController::class)->except(['index', 'show']);
+    Route::get('/packs/{id}/courses', [PackController::class, 'getPackCourses']);
 
 });
 
