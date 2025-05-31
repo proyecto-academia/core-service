@@ -34,6 +34,7 @@ Route::middleware('auth.remote')->group(function () {
     Route::post('/enrollments', [EnrollmentController::class, 'store']);
     Route::get('/enrollments/user', [EnrollmentController::class, 'getUserEnrollments']);
     Route::get('/enrollments/courses', [EnrollmentController::class, 'getUserCourses']);
+    Route::get('/enrollments/packs', [EnrollmentController::class, 'getUserPacks']);
 
     Route::get('/enrollments/{id}', [EnrollmentController::class, 'show']);
 

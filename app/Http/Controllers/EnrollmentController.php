@@ -122,9 +122,28 @@ class EnrollmentController extends ApiController
         $allCourses = $individualCourses->merge($packCourses)->unique('id');
 
         return $this->success([
-            'success' => true,
             'courses' => $allCourses,
         ]);
 
+    }
+
+    public function getUserPacks(Request $request)
+    {
+        $userId = $request->get('auth_user')['data']['id'] ?? null;
+        if (!$userId) {
+            return $this->error('Unauthorized', 401);
+        }
+
+        $packs = Pack::whereHas('enrollments', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        if ($packs->isEmpty()) {
+            return $this->error('No packs found for this user', 404);
+        }
+
+        return $this->success([
+            'packs' => $packs,
+        ]);
     }
 }
