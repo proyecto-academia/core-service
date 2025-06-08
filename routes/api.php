@@ -65,6 +65,12 @@ Route::middleware(['auth.remote', 'auth.role:admin,teacher'])->group(function ()
     Route::apiResource('classes', ClassModelController::class)->except(['index', 'show']);
 });
 
+//policies
+Route::middleware(['auth.remote', 'check.enrolled'])->group(function () {
+    Route::get('/policies/classes/show/{id}', [ClassModelController::class, 'getShowPolicy']);
+    Route::get('/policies/classes/post/{id}', [ClassModelController::class, 'getPostPolicy']);
+});
+
 
 
 // not found route

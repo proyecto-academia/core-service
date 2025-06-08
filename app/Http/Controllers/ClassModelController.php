@@ -119,4 +119,34 @@ class ClassModelController extends ApiController
 
         return $this->success(null, 'Class deleted', 204);
     }
+
+    public function getShowPolicy($id)
+    {
+        $class = ClassModel::find($id);
+        if (!$class) {
+            return $this->error('Class not found', 404);
+        }
+
+        $availableCourses = $this->getAvailableCourses(request());
+        if (!in_array($class->course_id, $availableCourses)) {
+            return $this->error('You don\'t have access to this class.', 401);
+        }
+
+        return $this->success(['allowed' => true]);
+    }
+
+    public function getPostPolicy($id)
+    {
+        $class = ClassModel::find($id);
+        if (!$class) {
+            return $this->error('Class not found', 404);
+        }
+
+        $availableCourses = $this->getAvailableCourses(request());
+        if (!in_array($class->course_id, $availableCourses)) {
+            return $this->error('You don\'t have access to this class.', 401);
+        }
+
+        return $this->success(['allowed' => true]);
+    }
 }
